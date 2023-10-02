@@ -44,31 +44,29 @@ ext.runtime.onExtensionClick.addListener(async () => {
       mutable: true,
     });
 
-    const aspectRatio = 900 / 600;
-    const minWidth = 900;
-    const minHeight = minWidth / aspectRatio;
-
     window = await ext.windows.create({
       center: true,
       fullscreenable: true,
       title,
       icon: "./assets/128.png",
       vibrancy: false,
-      frame: false,
-      titleBarStyle: "inset",
-      width: minWidth,
-      height: minHeight,
-      minWidth,
-      minHeight,
-      aspectRatio,
+      frame: true,
+      width: 1000,
+      height: 800,
+      minWidth: 600,
+      minHeight: 600,
+    });
+
+    const permissions = await ext.runtime.getPermissions();
+    const persistent =
+      (permissions["websessions"] ?? {})["create.persistent"]?.granted ?? false;
+    websession = await ext.websessions.create({
+      partition: title,
+      persistent,
+      global: false,
     });
 
     const contentSize = await ext.windows.getContentSize(window.id);
-
-    websession = await ext.websessions.create({
-      partition: title,
-      global: false,
-    });
     webview = await ext.webviews.create({
       window,
       websession,
@@ -81,6 +79,8 @@ ext.runtime.onExtensionClick.addListener(async () => {
     //   mode: "detach",
     //   activate: true,
     // });
+
+    await ext.windows.focus(window.id);
 
     instance = {
       tabId: tab.id,
