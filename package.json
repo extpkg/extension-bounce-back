@@ -1,7 +1,7 @@
 {
   "name": "extension-bounce-back",
-  "version": "1.1.0",
-  "description": "",
+  "version": "1.1.2",
+  "description": "Dive into a world where boomerangs rule and challenges await.",
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_ENV=production node ./scripts/build.mjs",
