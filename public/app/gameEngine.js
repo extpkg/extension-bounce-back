@@ -373,8 +373,6 @@ function EngineInit() {
   tileMaskCanvasContext.drawImage(tileMaskCanvas, tileImage.width, 0);
   tileMaskCanvasContext.globalCompositeOperation = "difference";
   tileMaskCanvasContext.drawImage(tileMaskCanvas, tileImage.width, 0);
-
-  InitDebug();
 }
 
 function EngineUpdate() {
@@ -420,7 +418,6 @@ function EngineUpdate() {
   shadowRenderPass = 0;
   RenderGameObjects();
   PostRender();
-  UpdateDebug();
 
   // clear input
   mouseWasDown = mouseIsDown;
@@ -613,14 +610,14 @@ function DrawText(
   context = mainCanvasContext,
 ) {
   context.fillStyle = color;
-  context.font = `900 ${size}px arial`;
+  context.font = `900 ${size * 0.7}px pixel`;
   context.textAlign = textAlign;
   context.textBaseline = "middle";
-  context.fillText(text, x, y);
+  context.fillText(text, x, y + 2);
   if (lineWidth) {
     context.lineWidth = lineWidth;
     context.strokeStyle = strokeColor;
-    context.strokeText(text, x, y);
+    context.strokeText(text, x, y + 2);
   }
 }
 
