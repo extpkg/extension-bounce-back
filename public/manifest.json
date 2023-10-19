@@ -3,7 +3,7 @@
   "name": "Bounce Back",
   "short_name": "Bounce Back",
   "description": "Dive into a world where boomerangs rule and challenges await!",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "EXT, Inc.",
   "icons": {
     "128": "./assets/128.png",
