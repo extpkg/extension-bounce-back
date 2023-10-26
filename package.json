@@ -1,6 +1,6 @@
 {
   "name": "extension-bounce-back",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Dive into a world where boomerangs rule and challenges await!",
   "type": "module",
   "scripts": {

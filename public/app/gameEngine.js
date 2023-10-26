@@ -1,11 +1,6 @@
-"use strict"; // strict mode
-///////////////////////////////////////////////////////////////////////////////
-// config
+"use strict";
 
-let godMode = 0;
-let debug = 0;
 let soundEnable = 1;
-let debugCollision = 0;
 
 ///////////////////////////////////////////////////////////////////////////////
 // helper functions
@@ -232,13 +227,6 @@ class GameObject {
     // apply physics
     this.velocity.Multiply(this.damping);
     this.angle += this.angleVelocity;
-
-    if (debugCollision)
-      DebugRect(
-        this.pos,
-        new Vector2(this.collisionSize, this.collisionSize),
-        "#F00",
-      );
   }
 
   Render() {
@@ -376,7 +364,7 @@ function EngineInit() {
 }
 
 function EngineUpdate() {
-  paused = !debug && !document.hasFocus();
+  paused = !document.hasFocus();
   if (paused) {
     // prevent stuck input if focus is lost
     mouseIsDown = mouseWasDown = 0;
@@ -398,10 +386,7 @@ function EngineUpdate() {
 
   // main update
   if (!paused) {
-    // debug speed up / slow down
     let frames = 1;
-    if (debug && KeyIsDown(107)) frames = 4;
-    if (debug && KeyIsDown(109)) frames = debugFrame % 4 == 0;
     while (frames--) {
       time = 1 + ++frame * timeDelta;
       Update();
@@ -481,24 +466,9 @@ onmousemove = function (e) {
     .Multiply(mainCanvasSize);
 };
 onkeydown = function (e) {
-  if (debug && e.keyCode == 192) e.preventDefault(), ToggleDebugConsole();
-  if (
-    debug &&
-    document.activeElement &&
-    document.activeElement.type == "textarea"
-  )
-    return;
-
   keyInputData[e.keyCode] = { isDown: 1 };
 };
 onkeyup = function (e) {
-  if (
-    debug &&
-    document.activeElement &&
-    document.activeElement.type == "textarea"
-  )
-    return;
-
   if (keyInputData[e.keyCode]) keyInputData[e.keyCode].isDown = 0;
 };
 
@@ -895,9 +865,6 @@ class Particle {
     // remove if dead
     if (this.lifeTimer.Get() > this.lifeTime)
       this.emitter.particles.splice(this.emitter.particles.indexOf(this), 1);
-
-    if (debugCollision)
-      DebugRect(this.pos, new Vector2(this.size, this.size), "#0FF");
   }
 
   Render() {
@@ -947,9 +914,6 @@ class ParticleEmitter extends GameObject {
       // go away when all particles are gone
       this.Destroy();
     }
-
-    if (debugCollision)
-      DebugRect(this.pos, new Vector2(this.size, this.size), "#00F");
 
     super.Update();
   }

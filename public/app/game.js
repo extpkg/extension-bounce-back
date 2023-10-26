@@ -1,15 +1,4 @@
-"use strict"; // strict mode
-///////////////////////////////////////////////////////////////////////////////
-// debug config
-
-//godMode=1;
-//debug=1;
-//debugCanvas=1;
-//debugCollision=1;
-//soundEnable=0;
-
-///////////////////////////////////////////////////////////////////////////////
-// init
+"use strict";
 
 let startLevel = 0;
 let level;
@@ -111,13 +100,6 @@ function InitLevel() {
   // create the level and player
   GenerateLevel();
   player = new Player(playerStartPos);
-
-  // spawn debug objects
-  //new Pickup(new Vector2(13,10),0);
-  //new SlimeEnemy(new Vector2(8,10),3);
-  //new JumpingEnemy(new Vector2(10,10));
-  //new ShieldEnemy(new Vector2(12,10));
-  //SpawnPickups(playerStartPos.Clone().AddXY(3,-6),1,100);
 }
 
 function SpawnPickups(pos, chance = 1, count = 1) {
@@ -213,9 +195,6 @@ function Update() {
 
   // load next level when ready
   if (endLevelTimer.IsSet() && endLevelTimer.Elapsed()) loadNextLevel = 1;
-
-  // debug key N to load next level
-  if (debug && KeyWasPressed(78)) loadNextLevel = 1;
 
   // zoom out on final level
   if (isFinalLevel) cameraScale = Max(cameraScale - 0.001, 1);
@@ -375,7 +354,7 @@ function MazeDataPos(pos) {
 }
 
 function RenderMap() {
-  if ((isStartLevel || isFinalLevel) && !debug) return;
+  if (isStartLevel || isFinalLevel) return;
 
   let iconSize = 16;
   let y = iconSize;
@@ -741,8 +720,7 @@ class Player extends MyGameObject {
     if (!this.playerDamageTimer.Elapsed()) return 0;
 
     // prepvent damage during intro/outro
-    if (godMode || endLevelTimer.IsSet() || this.IsIntro() || winTimer.IsSet())
-      return 0;
+    if (endLevelTimer.IsSet() || this.IsIntro() || winTimer.IsSet()) return 0;
 
     // try to apply damage
     let damageDone = super.Damage(damage);
@@ -1138,8 +1116,6 @@ class JumpingEnemy extends Enemy {
           .Add(this.randOffset);
       } else accel.Copy(this.randOffset);
       this.velocity.Add(accel.Multiply(this.speed));
-
-      //DebugPoint(player.pos.Clone().Add(this.randOffset));
     }
 
     // set draw tile when jumping or landed
@@ -1939,7 +1915,7 @@ let beatTimer = new Timer();
 let beatCount = 0;
 let lastNote;
 function UpdateAudio() {
-  if (!zzfx_x && MouseWasPressed() && soundEnable) zzfx_x = new AudioContext();
+  if (!zzfx_x && soundEnable) zzfx_x = new AudioContext();
 
   if (coinSoundTimer.IsSet() && coinSoundTimer.Elapsed()) {
     // coin sound plays twice quickly with higher pitch the second time
